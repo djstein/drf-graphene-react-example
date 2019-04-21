@@ -1,0 +1,37 @@
+language: python
+
+python:
+  - "3.6"
+
+matrix:
+  fast_finish: true
+
+# install: pip install -U tox-travis
+# script:
+
+# notifications:
+#   email:
+#     on_success: change
+#     on_failure: always
+
+script:
+  - pip install pipenv
+  - pipenv install
+  - pipenv run 'python manage.py collectstatic'
+  - pipenv run 'zappa package production -o zappa_output/zappa_output.zip'
+
+deploy:
+  - provider: s3
+    bucket: "success-backend"
+    skip_cleanup: true
+    local_dir: zappa_output
+    acl: public_read
+    region: us-east-1
+
+  - provider: s3
+    bucket: "success-static"
+    skip_cleanup: true
+    local_dir: static
+    acl: public_read
+    region: us-east-1
+

@@ -1,8 +1,0 @@
-graphene
-Django
-djangorestframework
-django-cors-headers
-django-filter
-markdown
-psycopg2
-whitenoise
